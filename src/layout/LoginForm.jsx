@@ -20,7 +20,7 @@ export default function LoginForm() {
       const rs = await axios.post('http://localhost:8889/auth/login', input)
       // alert(rs.data.token)
       if (rs.status === 200) {
-        alert('login successful')
+        alert('Login successful');
       }
       localStorage.setItem('token', rs.data.token)
       const rs1 = await axios.get('http://localhost:8889/auth/me', {
@@ -33,10 +33,11 @@ export default function LoginForm() {
       console.log( err.message)
     }
   }
+  
 
   return (
 <div className="flex justify-center items-center h-screen">
-  <div className="p-5 border w-4/6 min-w-[500px] mx-auto rounded mt-5 bg-gradient-to-b from-green-400 to-blue-500 flex justify-center items-center flex-col gap-4">
+  <div className="p-5 border w-4/6 min-w-[500px] mx-auto rounded mt-5 bg-gradient-to-b from-gray-300 gray-500 flex justify-center items-center flex-col gap-4">
     <div className="text-3xl mb-5 text-black">Login</div>
     <form className="flex flex-col gap-4" onSubmit={hdlSubmit}>
       <label className="form-control">

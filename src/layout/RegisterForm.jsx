@@ -17,10 +17,11 @@ export default function RegisterForm() {
   const hdlSubmit = async (e) => {
     try {
       e.preventDefault();
-      // validation
-      if (input.password !== input.confirmPassword) {
-        return alert("Please check confirm password");
-      }
+      if (!input.name || !input.username || !input.email || !input.password || !input.confirmPassword) {
+        alert("Please fill in all fields");
+      } else if (input.password !== input.confirmPassword) {
+        alert("Please check confirm password");
+      } 
       // console.log(input)
       const rs = await axios.post("http://localhost:8889/auth/register", input);
       console.log(rs);
@@ -33,7 +34,7 @@ export default function RegisterForm() {
   };
 
   return (
-<div className="p-5 border w-4/6 min-w-[500px] mx-auto rounded mt-5 bg-gradient-to-b from-green-400 to-blue-500 flex justify-center items-center">
+<div className="p-5 border w-4/6 min-w-[500px] mx-auto rounded mt-5 bg-gradient-to-b from-gray-300 gray-500 flex justify-center items-center">
   <div className="w-full max-w-xs">
     <div className="text-3xl mb-5 text-black">Register Form</div>
     <form className="flex flex-col gap-2" onSubmit={hdlSubmit}>

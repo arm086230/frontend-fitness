@@ -35,15 +35,15 @@ export default function UserHome() {
 function WorkOut({ workout }) {
   // console.log(workout);
   return (
-      <div className=" rounded w-[400px] overflow-hidden shadow-lg my-4">
-        <div className="max-w-sm">
-          <img className="" src={workout.img} alt="Workout" />
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2">{workout.workoutType}</div>
-            <p className="text-gray-700 text-base">{workout.advice}</p>
-          </div>
-        </div>
-      </div>
+<div className="rounded w-[400px] overflow-hidden shadow-lg my-4 mx-6">
+  <div className="max-w-sm">
+    <img className="" src={workout.img} alt="Workout" />
+    <div className="px-6 py-4">
+      <div className="font-bold text-xl mb-2">{workout.workoutType}</div>
+      <p className="text-gray-700 text-base">{workout.advice}</p>
+    </div>
+  </div>
+</div>
   );
 }
 

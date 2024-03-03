@@ -13,8 +13,7 @@ export default function Admin() {
                     }
                  }
                 )
-                // console.log(response);
-                // alert(5555)
+                
                 setData(response.data)
             }catch(err){
                 console.log(err)
@@ -32,6 +31,7 @@ export default function Admin() {
     )
 
 }
+
 
 function AdminShowBooking({booking}) {
   const [isDelete, setIsDelete] = useState(true)
@@ -52,6 +52,7 @@ function AdminShowBooking({booking}) {
             },
           }
         );
+        alert("deleted..")
         setIsDelete(!isDelete)
         window.location.reload()
         // console.log(response.data)
@@ -63,7 +64,33 @@ function AdminShowBooking({booking}) {
       }
     }
     deleteBooking()
+    
   }
+  const [editBooking, seteditBooking ] = useState({status : "Confirmed"})
+  const handleEditStatus = (e) =>{
+    e.preventDefault();
+    const editBook = async () =>{
+      try{
+        const id = booking.id
+        const response = await axios.patch(
+          `http://localhost:8889/booking//updatebooking/${id}`, editBooking, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+          )
+          alert("Status changed")
+        seteditBooking(response.data)
+        window.location.reload()
+      }catch(error){
+        console.log(error)
+      }
+    }
+    editBook()
+    
+      
+  }
+
     return (
         <div>
             <div className="overflow-x-auto">
@@ -75,7 +102,6 @@ function AdminShowBooking({booking}) {
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking Date Time</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -91,6 +117,13 @@ function AdminShowBooking({booking}) {
                 onClick={hdlDeleteBooking}
                 >
                   Delete</button>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                  <button 
+                className="text-indigo-600 hover:text-indigo-900"
+                onClick={handleEditStatus}
+                >
+                  Confirmed</button>
                   </td>
                 </tr>
               </tbody>

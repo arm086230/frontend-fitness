@@ -16,9 +16,13 @@ const userNav = [
 
 const adminNav = [
   
-  { to : '/', text: 'Workout' },
-  { to : '/new', text: 'Trainer' },
+  { to : '/', text: 'adminWorkout' },
+  {to : "/admin/showuser", text: "Showuser"},
+  {to: '/admin/showworkout ',text: 'Showorkout'},
+  { to : '/admin/addTainer', text: 'adminTrainer' },
+  { to : '/admin/Showtainer', text: 'Showtainer'},
   { to : '/admin/Booking', text: 'Show Booking'},
+  
   // { to : '/WeightTraining', text: 'WeightTraining'},
 ]
 
@@ -35,24 +39,24 @@ export default function Header() {
   }
 
   return (
-    <div className="navbar bg-base-100 ">
-      <div className="flex-1">
-        <a className="btn btn-ghost text-xl">Fitness : {user?.id ? user.username : 'Guest'}</a>
-      </div>
-      <div className="flex-none">
-        <ul className="menu menu-horizontal px-1">
-          { finalNav.map( el => (
-            <li key={el.to} >
-              <Link to={el.to}>{el.text}</Link>
-            </li>
-          ))}
-          { user?.id && (
-            <li>
-              <Link to='#' onClick={hdlLogout}>Logout</Link>
-            </li>
-          ) }
-        </ul>
-      </div>
+  <div className="navbar bg-base-100 flex justify-between items-center py-4 px-6 border-b border-gray-300">
+    <div className="flex-1">
+      <a className="btn btn-ghost text-xl text-gray-600">Fitness : {user?.id ? user.username : 'Guest'}</a>
     </div>
+    <div className="flex-none">
+      <ul className="menu menu-horizontal px-1">
+        {finalNav.map(el => (
+          <li key={el.to} >
+            <Link to={el.to} className="text-base text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md">{el.text}</Link>
+          </li>
+        ))}
+        {user?.id && (
+          <li>
+            <Link to='#' onClick={hdlLogout} className="text-base text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md">Logout</Link>
+          </li>
+        )}
+      </ul>
+    </div>
+  </div>
   );
 }

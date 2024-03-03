@@ -18,7 +18,7 @@ export default function NewTodoForm() {
       } catch (error) {
         console.error("Error fetching trainer:", error);
       }
-    };
+  };
     getTrainer();
   }, []);
 
