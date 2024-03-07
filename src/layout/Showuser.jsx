@@ -46,7 +46,7 @@ export default function Showuser() {
   )
 }
 function Users ({user}){
-  const [isDelete , setDelete] = useState(true)
+  const [isDelete , setDelete] = useState()
   const hdlDeleteUser = (e) =>{
     e.preventDefault();
     const deleteUser = async () =>{
