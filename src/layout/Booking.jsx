@@ -29,10 +29,20 @@ export default function Book() {
   },[])
   return(
     <div>
-
-             {Array.isArray(booking) && booking.map((item) => (
-        <Booking key={item.id} booking={item} />
-      ))}
+              <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tainerid</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking Date Time</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+          {booking && booking.map((item) => (<Booking key={item.id} booking={item} />))}
+          </tbody>
+        </table>
     </div>
   )
 
@@ -71,21 +81,9 @@ function Booking ({booking}) {
 
   // console.log(booking)
   return (
-    <div>
+    <>
       {isDelete && (
-        <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tainerid</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking Date Time</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            <tr className="hover:bg-gray-100">
+          <tr className="hover:bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap">{booking.id}</td>
               <td className="px-6 py-4 whitespace-nowrap">{booking.TrainertId}</td>
               <td className="px-6 py-4 whitespace-nowrap">{booking.userId}</td>
@@ -99,11 +97,8 @@ function Booking ({booking}) {
                   Delete</button>
               </td>
             </tr>
-          </tbody>
-        </table>
-      </div>
       )}
-    </div>
+    </>
   );
 }
 

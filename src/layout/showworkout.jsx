@@ -26,9 +26,23 @@ export default function showworkout() {
     },[])
   return (
     <div>
-      {Array.isArray(workout) && workout.map((item) =>(
-        <Workout key={item.id} workout={item} />
-      ))}
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UserId</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">img</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Advice</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WorkoutType</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WorkoutDate</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+          {workout && workout.map((item) =>(<Workout key={item.id} workout={item} />))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
@@ -64,44 +78,28 @@ function Workout ({workout}){
       Deleteworkout()
     }
     return(
-        <div>
+        <>
             {isDelete && (
-        <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UserId</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">img</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Advice</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WorkoutType</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WorkoutDate</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            <tr className="hover:bg-gray-100">
-            <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.id}</td>
-            <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.userId}</td>
-                    <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.img}</td>
-                    <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.advice}</td>
-                    <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.workoutType}</td>
-                    <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.WorkoutDate}</td>
-
-
-              <td className="px-6 py-4 whitespace-nowrap">
-                <button 
-                className="text-indigo-600 hover:text-indigo-900"
-                onClick={hdlDeleteworkout}
-                >
-                  Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              <tr className="hover:bg-gray-100">
+              <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.userId}</td>
+                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.img}</td>
+                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.advice}</td>
+                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.workoutType}</td>
+                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.WorkoutDate}</td>
+  
+  
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <button 
+                  className="text-indigo-600 hover:text-indigo-900"
+                  onClick={hdlDeleteworkout}
+                  >
+                    Delete</button>
+                </td>
+              </tr>
       )}
-        </div>
+    </>
     )
 
 }

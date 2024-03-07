@@ -41,7 +41,7 @@ export default function Header() {
   return (
   <div className="navbar bg-base-100 flex justify-between items-center py-4 px-6 border-b border-gray-300">
     <div className="flex-1">
-      <a className="btn btn-ghost text-xl text-gray-600">Fitness : {user?.id ? user.username : 'Guest'}</a>
+      <a className="btn btn-ghost text-xl text-gray-600">Kratos Fitness : {user?.id ? user.username : 'Guest'}</a>
     </div>
     <div className="flex-none">
       <ul className="menu menu-horizontal px-1">
