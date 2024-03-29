@@ -1,13 +1,11 @@
-import React from 'react'
-import { useEffect , useState } from 'react'
-import axios from 'axios';
-
+import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Book() {
   const [booking, setBooking] = useState([]);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const getBooking = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -19,45 +17,70 @@ export default function Book() {
             },
           }
         );
-        setBooking(response.data.getbooking)
+        setBooking(response.data.getbooking);
         // console.log(response.data)
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    getBooking()
-  },[])
-  return(
+    };
+    getBooking();
+  }, []);
+
+  return (
     <div>
-              <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tainerid</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking Date Time</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-          {booking && booking.map((item) => (<Booking key={item.id} booking={item} />))}
-          </tbody>
-        </table>
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              ID
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Tainerid
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              User ID
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Booking Date Time
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Status
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {booking &&
+            booking.map((item) => <Booking key={item.id} booking={item} />)}
+        </tbody>
+      </table>
     </div>
-  )
-
+  );
 }
-function Booking ({booking}) {
-  const [isDelete, setIsDelete] = useState(true)
-
-  const hdlDeleteBooking = (e) =>{
+function Booking({ booking }) {
+  const [isDelete, setIsDelete] = useState(true);
+  const hdlDeleteBooking = (e) => {
     e.preventDefault();
-    // alert(555)
-    const deleteBooking =  async () => {
+
+    const deleteBooking = async () => {
       try {
         const token = localStorage.getItem("token");
-        const delebooks = booking.id
-        // alert(delebooks)
+        const delebooks = booking.id;
+
         const response = await axios.delete(
           `http://localhost:8889/booking/delete/${delebooks}`,
           {
@@ -66,40 +89,83 @@ function Booking ({booking}) {
             },
           }
         );
-        setIsDelete(!isDelete)
-        window.location.reload()
+        setIsDelete(!isDelete);
+        window.location.reload();
         // console.log(response.data)
       } catch (error) {
-        console.log(error)
-
+        console.log(error);
       } finally {
-        setIsDelete(true)
+        setIsDelete(true);
       }
-    }
-    deleteBooking()
-}
+    };
+    deleteBooking();
+  };
+  // console.log(booking);
+
+  useEffect(() => {
+    const objTime = new Date(booking.bookingDateTime);
+    const checkOutOfSession = (obj) => {
+      const currentDate = new Date();
+
+      const objTime = obj.getTime();
+      const currentTime = currentDate.getTime();
+
+      const timeDifference = currentTime - objTime;
+
+      if (timeDifference >= 60000) {
+        const deleteBooking = async () => {
+          try {
+            const token = localStorage.getItem("token");
+            const delebooks = booking.id;
+    
+            const response = await axios.delete(
+              `http://localhost:8889/booking/delete/${delebooks}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            setIsDelete(!isDelete);
+            window.location.reload();
+            // console.log(response.data)
+          } catch (error) {
+            console.log(error);
+          } finally {
+            setIsDelete(true);
+          }
+        };
+        deleteBooking();
+      } else {
+        return false;
+      }
+    };
+
+    checkOutOfSession(objTime);
+  }, [booking]);
 
   // console.log(booking)
   return (
     <>
       {isDelete && (
-          <tr className="hover:bg-gray-100">
-              <td className="px-6 py-4 whitespace-nowrap">{booking.id}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{booking.TrainertId}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{booking.userId}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{booking.bookingDateTime}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{booking.status}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <button 
-                className="text-indigo-600 hover:text-indigo-900"
-                onClick={hdlDeleteBooking}
-                >
-                  Delete</button>
-              </td>
-            </tr>
+        <tr className="hover:bg-gray-100">
+          <td className="px-6 py-4 whitespace-nowrap">{booking.id}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{booking.TrainertId}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{booking.userId}</td>
+          <td className="px-6 py-4 whitespace-nowrap">
+            {new Date(booking.bookingDateTime).toLocaleTimeString("th-TH").slice(0, 8)}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap">{booking.status}</td>
+          <td className="px-6 py-4 whitespace-nowrap">
+            <button
+              className="text-indigo-600 hover:text-indigo-900"
+              onClick={hdlDeleteBooking}
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
       )}
     </>
   );
 }
-
-

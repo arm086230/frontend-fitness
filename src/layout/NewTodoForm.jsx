@@ -1,11 +1,10 @@
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
 
 export default function NewTodoForm() {
-  const [trainer, setTrainer] = useState(null);
-
+  const [trainers, setTrainers] = useState([]);
   useEffect(() => {
-    const getTrainer = async () => {
+    const fetchTrainers = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
@@ -14,56 +13,69 @@ export default function NewTodoForm() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        setTrainer(response.data);
+        setTrainers(response.data);
       } catch (error) {
-        console.error("Error fetching trainer:", error);
+        console.error("Error fetching trainers:", error);
       }
-  };
-    getTrainer();
+    };
+    fetchTrainers();
   }, []);
 
   return (
     <div className="flex gap-3">
-      {trainer && trainer.map((el) => <Trainer key={el.id} trainer={el} />)}
+      {trainers.map((trainer) => (
+        <Trainer key={trainer.id} trainer={trainer} />
+      ))}
     </div>
   );
 }
 
-
 function Trainer({ trainer }) {
   const [input, setInput] = useState({
-    TrainertId: trainer.id,
+    TrainerId: trainer.id,
     bookingDateTime: "",
     status: "Pending",
   });
-
-  const hdlChange = (e) => {
-    setInput((prv) => ({ ...prv, [e.target.name]: e.target.value }));
+  const [isBookingAllowed, setIsBookingAllowed] = useState(true);
+  const handleInputChange = (e) => {
+    setInput((prevInput) => ({ ...prevInput, [e.target.name]: e.target.value }));
   };
 
-  // const hdlCraeteBooking = (e) => {
-  //   e.preventDefault();
-  //   alert(input.TrainertId);
-  //   alert(input.bookingDateTime);
-  // };
-
-  const hdlCraeteBooking = (e) => {
+  const handleCreateBooking = async (e) => {
     e.preventDefault();
-    const createBooking = () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-        const rs = axios.post(
-          `http://localhost:8889/booking/createbooking/`,
-          input,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        alert("successfully created");
-      } catch (error) {
-        alert(error);
-      }
-    };
-    createBooking();
+    try {
+      console.log();
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const response = await axios.post(
+        `http://localhost:8889/booking/createbooking/`,
+        {...input, bookingDateTime: new Date()},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Successfully created");
+      setIsBookingAllowed(false);
+      deleteBooking();
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  // const Dte = new Date().toLocaleTimeString()
+  // console.log(Dte);
+  '2024-03-29 17:51:00.000'
+
+  const deleteBooking = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      await axios.delete(`http://localhost:8889/booking/deletebooking/${input.TrainerId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert("Booking time expired. Booking deleted.");
+      setIsBookingAllowed(true);
+    } catch (error) {
+      console.error("Error deleting booking:", error);
+    }
   };
 
   return (
@@ -76,21 +88,22 @@ function Trainer({ trainer }) {
           <div className="card-body items-center text-center">
             <h2 className="card-title">{trainer.name}</h2>
             <p className="">อายุ : {trainer.age}</p>
-            <p className="">phone : {trainer.phone}</p>
+            <p className="">Phone : {trainer.phone}</p>
             <div className="card-actions card-body items-center text-center">
               <input
                 className="btn btn-primary"
-                onChange={hdlChange}
-                type="datetime-local"
+                onChange={handleInputChange}
+                type="date"
                 name="bookingDateTime"
                 value={input.bookingDateTime}
+                min={new Date().toISOString().split('T')[0]}
               />
               <button
-                onChange={hdlChange}
                 className="btn btn-primary"
-                onClick={hdlCraeteBooking}
+                onClick={handleCreateBooking}
+                disabled={!isBookingAllowed || input.bookingDateTime === ""}
               >
-                คลิกเลือกTainer
+                จอง
               </button>
             </div>
           </div>
