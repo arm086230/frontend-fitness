@@ -17,7 +17,7 @@ function addTainer() {
     try{
       e.preventDefault();
       const token = localStorage.getItem('token')
-      console.log(addTainer)
+      // console.log(addTainer)
       const rs = await axios.post('http://localhost:8889/workout/createtraniner', addTainer , {
         headers: {
           Authorization: `Bearer ${token}`

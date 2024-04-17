@@ -44,7 +44,6 @@ const userRouter = createBrowserRouter([
       { index: true, element: <UserHome /> },
       { path: "/new", element: <NewTodoForm /> },
       { path: "/Booking", element: <Booking /> },
-      
     ],
   },
 ]);
@@ -70,10 +69,27 @@ const adminRouter = createBrowserRouter([
   },
 ]);
 
+const TainerRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <>
+        <Header />
+        <Outlet />
+      </>
+    ),
+    children: [
+      { index: true, element: <UserHome /> },
+      { path: "/new", element: <NewTodoForm /> },
+      { path: "/Booking", element: <Booking /> },
+    ],
+  },
+]);
+
 
 export default function AppRouter() {
   const { user } = useAuth();
   // console.log(user?.role)
-  const finalRouter = user?.id ? (user.role ==="ADMIN" ? adminRouter: userRouter) : guestRouter
+  const finalRouter = user?.id ? (user.role ==="ADMIN" ? adminRouter: user.role === "TAINER" ? TainerRouter : userRouter) : guestRouter
   return <RouterProvider router={finalRouter} />;
 }

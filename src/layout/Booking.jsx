@@ -64,8 +64,7 @@ export default function Book() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {booking &&
-            booking.map((item) => <Booking key={item.id} booking={item} />)}
+          {booking && booking.map((item) => <Booking key={item.id} booking={item} />)}
         </tbody>
       </table>
     </div>
@@ -101,7 +100,6 @@ function Booking({ booking }) {
     deleteBooking();
   };
   // console.log(booking);
-
   useEffect(() => {
     const objTime = new Date(booking.bookingDateTime);
     const checkOutOfSession = (obj) => {
@@ -117,7 +115,7 @@ function Booking({ booking }) {
           try {
             const token = localStorage.getItem("token");
             const delebooks = booking.id;
-    
+
             const response = await axios.delete(
               `http://localhost:8889/booking/delete/${delebooks}`,
               {
@@ -153,7 +151,9 @@ function Booking({ booking }) {
           <td className="px-6 py-4 whitespace-nowrap">{booking.TrainertId}</td>
           <td className="px-6 py-4 whitespace-nowrap">{booking.userId}</td>
           <td className="px-6 py-4 whitespace-nowrap">
-            {new Date(booking.bookingDateTime).toLocaleTimeString("th-TH").slice(0, 8)}
+            {new Date(booking.bookingDateTime)
+              .toLocaleTimeString("th-TH")
+              .slice(0, 8)}
           </td>
           <td className="px-6 py-4 whitespace-nowrap">{booking.status}</td>
           <td className="px-6 py-4 whitespace-nowrap">

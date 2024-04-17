@@ -16,9 +16,8 @@ export default function LoginForm() {
   const hdlSubmit = async e => {
     try {
       e.preventDefault()
-      // validation
       const rs = await axios.post('http://localhost:8889/auth/login', input)
-      // alert(rs.data.token)
+      console.log(rs.data.token)
       if (rs.status === 200) {
         alert('Login successful');
       }
@@ -26,7 +25,7 @@ export default function LoginForm() {
       const rs1 = await axios.get('http://localhost:8889/auth/me', {
         headers : { Authorization : `Bearer ${rs.data.token}` }
       })
-      // console.log(rs1.data)
+      console.log(rs1.data)
       setUser(rs1.data)
       
     }catch(err) {

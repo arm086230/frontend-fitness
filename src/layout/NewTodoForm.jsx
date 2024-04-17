@@ -54,27 +54,8 @@ function Trainer({ trainer }) {
       );
       alert("Successfully created");
       setIsBookingAllowed(false);
-      deleteBooking();
     } catch (error) {
       alert(error);
-    }
-  };
-
-  // const Dte = new Date().toLocaleTimeString()
-  // console.log(Dte);
-  '2024-03-29 17:51:00.000'
-
-  const deleteBooking = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-      await axios.delete(`http://localhost:8889/booking/deletebooking/${input.TrainerId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      alert("Booking time expired. Booking deleted.");
-      setIsBookingAllowed(true);
-    } catch (error) {
-      console.error("Error deleting booking:", error);
     }
   };
 
