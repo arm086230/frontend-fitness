@@ -1,104 +1,232 @@
-import React , {useState} from 'react'
-import axios from 'axios'
+import axios from "axios";
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
-function addTainer() {
-  const [addTainer , setAddTainer] = useState({
-    name : '',
-    age : '',
-    img : '',
-    phone : '',
-    status : '',
+export default function RegisterForm() {
+  const [input, setInput] = useState({
+    name: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
+    phone: "",
+    age: "",
+    sex: "",
+    role:""
+  });
 
-  })
-  const hdlChange = e =>{
-    setAddTainer(prv => ({...prv, [e.target.name]: e.target.value }))
-  }
+  const fileInput = useRef(null);
+  // const navigate = useNavigate();
+
+  const hdlChange = (e) => {
+    setInput((prv) => ({ ...prv, [e.target.name]: e.target.value }));
+  };
+
+  const isValidPhoneNumber = (phone) => {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phone);
+  };
+
   const hdlSubmit = async (e) => {
-    try{
+    try {
       e.preventDefault();
-      const token = localStorage.getItem('token')
-      // console.log(addTainer)
-      const rs = await axios.post('http://localhost:8889/workout/createtraniner', addTainer , {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      if(rs.status === 200){
-        alert('trainer added successfully')
-      }
-    }catch(err){
-      console.log(err)
-    }
-  }
+      if (
+        !input.name ||
+        !input.username ||
+        !input.email ||
+        !input.password ||
+        !input.confirmPassword ||
+        !input.phone ||
+        !input.age ||
+        !input.sex ||
+        !input.role
 
+
+      ) {
+        alert("Please fill in all fields");
+      } else if (input.password !== input.confirmPassword) {
+        alert("Please check confirm password");
+      } else if (!isValidPhoneNumber(input.phone)) {
+        alert("Please enter a valid 10-digit phone number");
+      } else {
+        const file = fileInput.current?.files[0];
+        const formData = new FormData();
+
+        Object.entries(input).forEach(([key, value]) => {
+          formData.append(key, value);
+          console.log(value);
+        });
+
+        if (file) {
+          formData.append("image", file);
+        }
+
+        const rs = await axios.post(
+          "http://localhost:8889/auth/register",
+          formData
+        );
+        console.log(rs);
+        if (rs.status === 200) {
+          alert("Register Successful");
+        }
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+    console.log(input);
+  };
 
   return (
-    <div className='p-5 border w-4/6 min-w-[500px] mx-auto mx-auto rounded mt-5 bg-gradient-to-b from-gray-200 flex justify-center items-center'>
-      <div className='w-full max-w-xs'>
-        <div className='text-3xl mb-5 text-black'>Addtainer</div>
-        <form className="flex flex-col gap-2" onSubmit={hdlSubmit}>
-          <label className='form-control'>
-              <span className='label-text text-black'>Name</span>
-              <input
-                type='text'
-                className='input input-bordered w-full max-w-xs'
-                name='name'
-                value={addTainer.name}
-                onChange={hdlChange}
-              />
-          </label>
-          <label className='form-control'>
-              <span className='label-text text-black'>Age</span>
-              <input
-                type='text'
-                className='input input-bordered w-full max-w-xs'
-                name='age'
-                value={addTainer.age}
-                onChange={hdlChange}
-
-              />
-          </label>
-          <label className='form-control'>
-              <span className='label-text text-black'>Image</span>
-              <input
-                type='text'
-                className='input input-bordered w-full max-w-xs'
-                name='img'
-                value={addTainer.img}
-                onChange={hdlChange}
-              />
-          </label>
-          <label className='form-control'>
-              <span className='label-text text-black'>Phone</span>
-              <input
-                type='text'
-                className='input input-bordered w-full max-w-xs'
-                name='phone'
-                value={addTainer.phone}
-                onChange={hdlChange}
-              />
-          </label>
-          <select
-            className="select select-bordered w-full max-w-xs"
-            name="status"
-            value={addTainer.status}
-            onChange={hdlChange}
-          >
-            <option value="">Select Status</option>
-            <option value="free">Free</option>
-            <option value="unavailable">unavailable</option>
-          </select>
-          
-          <button
-        type="submit"
-        className="btn btn-primary bg-pink-400 hover:bg-pink-200 text-white px-3 py-2 md:px-4 md:py-3 rounded-md shadow-md transition-colors duration-300 text-lg md:text-xl mt-4">
-        AddTainer
-      </button>
-        </form>
+    <div
+      className="max-w-4xl mx-auto font-[sans-serif] text-[#333] p-6"
+      onSubmit={hdlSubmit}
+    >
+      <div className="text-center mb-16">
+        <a href="javascript:void(0)">
+          <img src="" alt="logo!!" className="w-52 inline-block" />
+        </a>
+        <h4 className="text-base font-semibold mt-3">
+          Sign up into your account
+        </h4>
       </div>
+      <form>
+        <div className="grid sm:grid-cols-2 gap-y-7 gap-x-12">
+          <div>
+            <label className="text-sm mb-2 block">Full Name</label>
+            <input
+              type="text"
+              name="name"
+              value={input.name}
+              onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter name"
+            />
+          </div>
+          <div>
+            <label className="text-sm mb-2 block">User Name</label>
+            <input
+              type="text"
+              name="username"
+              value={input.username}
+              onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter username"
+            />
+          </div>
+          <div>
+            <label className="text-sm mb-2 block">Email </label>
+            <input
+              type="email"
+              name="email"
+              value={input.email}
+              onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter email"
+            />
+          </div>
+          <div>
+            <label className="text-sm mb-2 block">Mobile No.</label>
+            <input
+              type="text"
+              name="phone"
+              value={input.phone}
+              onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter mobile number"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm mb-2 block">Age</label>
+            <input
+              type="text"
+              name="age"
+              value={input.age}
+              onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter age"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-600 mt-2">
+              <span className="label-text text-black mb-1 block">Gender</span>
+              <select
+                className="w-full border border-gray-300 rounded-md py-3 px-4 focus:outline-none focus:border-blue-500"
+                name="sex"
+                value={input.sex}
+                onChange={hdlChange}
+              >
+                <option value="" hidden>
+                  Click to select gender
+                </option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+              </select>
+            </label>
+          </div>
+
+          <div>
+            <label className="text-sm mb-2 block">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={input.password}
+              onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter password"
+            />
+          </div>
+          <div>
+            <label className="text-sm mb-2 block">Confirm Password</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={input.confirmPassword}
+              onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter confirm password"
+            />
+          </div>
+
+           <div className="mb-4">
+            <label className="block text-gray-600 mt-2">
+              <span className="label-text text-black mb-1 block">Role</span>
+              <select
+                className="w-full border border-gray-300 rounded-md py-3 px-4 focus:outline-none focus:border-blue-500"
+                name="role"
+                value={input.role}
+                onChange={hdlChange}
+              >
+                <option value="" hidden>
+                  Click to select role
+                </option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="USER">USER</option>
+                <option value="TRAINER">TRAINER</option>
+              </select>
+            </label>
+          </div> 
+
+          <div className="">
+            <input
+              type="file"
+              className="w-full mt-10"
+              name="image"
+              ref={fileInput}
+              accept="image/*"
+            />
+          </div>
+        </div>
+        <div className="mt-10">
+          <button
+            type="submit"
+            className="min-w-[150px] py-3 px-4 text-sm font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+          >
+            Sign up
+          </button>
+        </div>
+      </form>
     </div>
-  )
+  );
 }
-
-export default addTainer
-

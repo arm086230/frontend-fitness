@@ -1,8 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, { useState , useEffect } from 'react'
 import axios from 'axios'
 
 export default function showworkout() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [workout , setWorkout] = useState([])
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() =>{
         const getWorkout = async () =>{
             try{
@@ -30,11 +33,12 @@ export default function showworkout() {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UserId</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">img</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Advice</th>
+              {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UserId</th> */}
+              {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">img</th> */}
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WorkoutType</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Advice</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">img</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WorkoutDate</th>
             </tr>
           </thead>
@@ -46,6 +50,7 @@ export default function showworkout() {
     </div>
   )
 }
+// eslint-disable-next-line react-refresh/only-export-components
 function Workout ({workout}){
     const [isDelete, setIsDelete] = useState(true)
 
@@ -81,12 +86,12 @@ function Workout ({workout}){
         <>
             {isDelete && (
               <tr className="hover:bg-gray-100">
+              {/* <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.id}</td>
               <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.id}</td>
-              <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.userId}</td>
-                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.img}</td>
-                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.advice}</td>
+                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.userId}</td> */}
                       <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.workoutType}</td>
+                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.advice}</td>
+                      <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.img}</td>
                       <td className="px-6 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">{workout.WorkoutDate}</td>
   
   

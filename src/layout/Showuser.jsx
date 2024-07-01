@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { useEffect , useState } from 'react'
 import axios from 'axios'
@@ -101,10 +102,10 @@ function Users ({user}){
         <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
         <td className="px-6 py-4 whitespace-nowrap">{user.role}</td>
         <td className="px-6 py-4 whitespace-nowrap">
-          <button className="text-indigo-600 hover:text-indigo-900" onClick={hdlDeleteUser}>Delete</button>
+          <button className="text-indigo-600 hover:text-indigo-900" onClick={handleEditRole}>Updated user</button>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
-          <button className="text-indigo-600 hover:text-indigo-900" onClick={handleEditRole}>Updated user</button>
+          <button className="text-red-600 hover:text-red-600" onClick={hdlDeleteUser}>Delete</button>
         </td>
       </tr>
   )

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import axios from "axios";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
@@ -5,7 +6,6 @@ import { Link } from "react-router-dom";
 
 export default function UserHome() {
   const [workouts, setWorkouts] = useState(null);
-  // console.log(workouts)
 
   useEffect(() => {
     const getWorkouts = async () => {
@@ -26,24 +26,25 @@ export default function UserHome() {
   }, []);
 
   return (
-    <div className="flex gap-3">
-      {workouts && workouts.map((el) => <WorkOut key={el.id} workout={el} />)}
+    <div className="flex flex-wrap gap-3 justify-start">
+      {workouts &&
+        workouts.map((el) => (
+          <WorkOut key={el.id} workout={el} />
+        ))}
     </div>
   );
 }
 
 function WorkOut({ workout }) {
-  // console.log(workout);
   return (
-<div className="rounded w-[400px] overflow-hidden shadow-lg my-4 mx-6">
-  <div className="max-w-sm">
-    <img className="" src={workout.img} alt="Workout" />
-    <div className="px-6 py-4">
-      <div className="font-bold text-xl mb-2">{workout.workoutType}</div>
-      <p className="text-gray-700 text-base">{workout.advice}</p>
+    <div className="bg-white rounded w-[340px] sm:w-[400px] md:w-[450px] lg:w-[340px] xl:w-[400px] overflow-hidden shadow-lg my-4 mx-3 flex-shrink">
+      <div className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+        <img className="w-full h-auto" src={workout.img} alt="Workout" />
+        <div className="px-6 py-4">
+          <div className="font-bold text-xl mb-2">{workout.workoutType}</div>
+          <p className="text-gray-700 text-base">{workout.advice}</p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   );
 }
-

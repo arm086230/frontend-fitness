@@ -1,5 +1,7 @@
 import axios from "axios";
-import { useState , useRef} from "react";
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function RegisterForm() {
   const [input, setInput] = useState({
@@ -11,163 +13,218 @@ export default function RegisterForm() {
     phone: "",
     age: "",
     sex: "",
+    role: "",
   });
 
-  const fileInput = useRef(null)
-  
+  const fileInput = useRef(null);
+  const navigate = useNavigate();
+
   const hdlChange = (e) => {
     setInput((prv) => ({ ...prv, [e.target.name]: e.target.value }));
+  };
+
+  const isValidPhoneNumber = (phone) => {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phone);
   };
 
   const hdlSubmit = async (e) => {
     try {
       e.preventDefault();
       if (
-        !input.name ||
         !input.username ||
-        !input.email ||
         !input.password ||
-        !input.confirmPassword
+        !input.confirmPassword ||
+        !input.phone
       ) {
-        alert("Please fill in all fields");
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          text: "Please fill in all fields",
+        });
       } else if (input.password !== input.confirmPassword) {
-        alert("Please check confirm password");
-      }
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          text: "Please check confirm password",
+        });
+      } else if (!isValidPhoneNumber(input.phone)) {
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          text: "Please enter a valid 10-digit phone number",
+        });
+      } else {
+        // Prepare form data for registration
+        const file = fileInput.current?.files[0];
+        const formData = new FormData();
+        Object.entries(input).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
 
-      const file = fileInput.current?.files[0]
-      const formData = new FormData();
+        if (file) {
+          formData.append("image", file);
+        }
 
-      Object.entries(input).forEach(([key , value]) =>{
-        formData.append(key, value)
-        console.log(value)
-      })
+        // Send registration request
+        const response = await axios.post(
+          "http://localhost:8889/auth/register",
+          formData
+        );
 
-      if (file){
-        formData.append('image', file)
+        if (response.status === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Register Successful",
+            text: "You can now login with your credentials.",
+          }).then(() => {
+            navigate("/login"); // Redirect to login page after successful registration
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Registration Failed",
+            text: "Failed to register. Please try again later.",
+          });
+        }
       }
-      
-      // console.log(input)
-      const rs = await axios.post("http://localhost:8889/auth/register", formData);
-      console.log(rs);
-      if (rs.status === 200) {
-        alert("Register Successful");
-      }
-      window.location.reload()
     } catch (err) {
       console.log(err.message);
     }
   };
 
   return (
-    <div className="p-5 border w-4/6 min-w-[500px] mx-auto rounded mt-5 bg-gradient-to-b from-gray-300 gray-500 flex justify-center items-center">
-      <div className="w-full max-w-xs">
-        <div className="text-3xl mb-5 text-black">Register Form</div>
-        <form className="flex flex-col gap-2" onSubmit={hdlSubmit}>
-          <label className="form-control">
-            <span className="label-text text-black">Name</span>
+    <div
+      className="max-w-4xl mx-auto font-[sans-serif] text-[#333] p-6"
+      onSubmit={hdlSubmit}
+    >
+      <div className="text-center mb-16">
+        <a href="javascript:void(0)">
+          <img src="" alt="logo!!" className="w-52 inline-block" />
+        </a>
+        <h4 className="text-base font-semibold mt-3">
+          Sign up into your account
+        </h4>
+      </div>
+      <form>
+        <div className="grid sm:grid-cols-2 gap-y-7 gap-x-12">
+          <div>
+            <label className="text-sm mb-2 block">Full Name</label>
             <input
               type="text"
-              className="input input-bordered w-full"
               name="name"
               value={input.name}
               onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter name"
             />
-          </label>
-          <label className="form-control">
-            <span className="label-text text-black">Username</span>
+          </div>
+          <div>
+            <label className="text-sm mb-2 block">User Name</label>
             <input
               type="text"
-              className="input input-bordered w-full"
               name="username"
               value={input.username}
               onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter username"
             />
-          </label>
-          <label className="form-control">
-            <span className="label-text text-black">Email</span>
+          </div>
+          <div>
+            <label className="text-sm mb-2 block">Email </label>
             <input
               type="email"
-              className="input input-bordered w-full"
               name="email"
               value={input.email}
               onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter email"
             />
-          </label>
-
-          <label className="form-control">
-            <span className="label-text text-black">Phone</span>
+          </div>
+          <div>
+            <label className="text-sm mb-2 block">Mobile No.</label>
             <input
               type="text"
-              className="input input-bordered w-full"
               name="phone"
               value={input.phone}
               onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter mobile number"
             />
-          </label>
+          </div>
 
-          <label className="form-control">
-            <span className="label-text text-black">Age</span>
+          <div>
+            <label className="text-sm mb-2 block">Age</label>
             <input
               type="text"
-              className="input input-bordered w-full"
               name="age"
               value={input.age}
               onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter age"
             />
-          </label>
+          </div>
 
-          <label className="form-control">
-            <span className="label-text text-black">Gender</span>
-            <select
-              className="w-full"
-              name="sex"
-              value={input.sex}
-              onChange={hdlChange}
-            >
-              <option value="" hidden>Click to select gender</option>
-              <option value="men">Men</option>
-              <option value="women">Women</option>
-            </select>
-          </label>
+          <div className="mb-4">
+            <label className="block text-gray-600 mt-2">
+              <span className="label-text text-black mb-1 block">Gender</span>
+              <select
+                className="w-full border border-gray-300 rounded-md py-3 px-4 focus:outline-none focus:border-blue-500"
+                name="sex"
+                value={input.sex}
+                onChange={hdlChange}
+              >
+                <option value="" hidden>
+                  Click to select gender
+                </option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+              </select>
+            </label>
+          </div>
 
-          <label className="form-control">
-            <span className="label-text text-black">Password</span>
+          <div>
+            <label className="text-sm mb-2 block">Password</label>
             <input
               type="password"
-              className="input input-bordered w-full"
               name="password"
               value={input.password}
               onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter password"
             />
-          </label>
-          <label className="form-control">
-            <span className="label-text text-black">Confirm Password</span>
+          </div>
+          <div>
+            <label className="text-sm mb-2 block">Confirm Password</label>
             <input
               type="password"
-              className="input input-bordered w-full"
               name="confirmPassword"
               value={input.confirmPassword}
               onChange={hdlChange}
+              className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+              placeholder="Enter confirm password"
             />
-          </label>
-          <div>
-          <input 
-          type="file"
-          className="w-full"
-          name="image"
-          ref={fileInput}
-          accept="image/*" />
           </div>
 
-
+          <div>
+            <input
+              type="file"
+              className="w-full"
+              name="image"
+              ref={fileInput}
+              accept="image/*"
+            />
+          </div>
+        </div>
+        <div className="!mt-10">
           <button
             type="submit"
-            className="btn btn-primary bg-pink-600 hover:bg-pink-700 text-white px-3 py-2 md:px-4 md:py-3 rounded-md shadow-md transition-colors duration-300 text-lg md:text-xl mt-4"
+            className="min-w-[150px] py-3 px-4 text-sm font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
           >
-            Submit
+            Sign up
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

@@ -2,13 +2,15 @@ import {Link, useNavigate} from 'react-router-dom'
 import useAuth from '../hooks/useAuth';
 
 const guestNav = [
-  { to : '/', text: 'Login' },
+  
+  { to : '/', text: 'Home' },
+  { to : '/login', text: 'Login' },
   { to : '/register', text: 'Register' },
 ]
 
 const userNav = [
   
-  { to : '/', text: 'Workout' },
+  { to : '/', text: 'exercise posture' },
   { to : '/new', text: 'Trainer' },
   { to : '/Booking', text: 'Booking'},
   // { to : '/WeightTraining', text: 'WeightTraining'},
@@ -38,10 +40,11 @@ export default function Header() {
     navigate('/')
   }
 
+
   return (
-  <div className="navbar bg-base-100 flex justify-between items-center py-4 px-6 border-b border-gray-300">
+  <div className="navbar bg-blue-400 flex justify-between items-center py-2 px-9 border-b  border-gray-300">
     <div className="flex-1">
-      <a className="btn btn-ghost text-xl text-gray-600">Kratos Fitness : {user?.id ? user.username : 'Guest'}</a>
+      <a className="btn btn-ghost text-xl text-gray-600 ">Kratos Fitness : {user?.id ? user.username : 'Guest'}</a>
     </div>
     <div className="flex-none">
       <ul className="menu menu-horizontal px-1">

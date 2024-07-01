@@ -4,7 +4,6 @@ import RegisterForm from "../layout/RegisterForm";
 import useAuth from "../hooks/useAuth";
 import Header from "../layout/Header";
 import UserHome from "../layout/UserHome";
-import NewTodoForm from "../layout/NewTodoForm";
 import Booking from "../layout/Booking";
 import Admin from "../layout/Admin";
 import AddTainer from "../layout/addtainer";
@@ -12,6 +11,10 @@ import Addworkout from "../layout/addworkout";
 import Showworkout from "../layout/showworkout";
 import Showtainer from "../layout/Showtainer";
 import Showuser from "../layout/Showuser"
+import Trainer from "../layout/Trainer";
+import Home from "../layout/Home"
+
+
 
 
 
@@ -25,7 +28,8 @@ const guestRouter = createBrowserRouter([
       </>
     ),
     children: [
-      { index: true, element: <LoginForm /> },
+      { index: true, element: <Home /> },
+      {path: "/login", element: <LoginForm />},
       { path: "/register", element: <RegisterForm /> },
     ],
   },
@@ -42,7 +46,7 @@ const userRouter = createBrowserRouter([
     ),
     children: [
       { index: true, element: <UserHome /> },
-      { path: "/new", element: <NewTodoForm /> },
+      { path: "/new", element: <Trainer /> },
       { path: "/Booking", element: <Booking /> },
     ],
   },
@@ -80,7 +84,7 @@ const TainerRouter = createBrowserRouter([
     ),
     children: [
       { index: true, element: <UserHome /> },
-      { path: "/new", element: <NewTodoForm /> },
+      { path: "/new", element: <Trainer /> },
       { path: "/Booking", element: <Booking /> },
     ],
   },
