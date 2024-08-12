@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Swal from "sweetalert2";
 
 export default function Book() {
   const [booking, setBooking] = useState([]);
@@ -25,44 +24,27 @@ export default function Book() {
     getBooking();
   }, []);
 
-  const hdlDeleteBooking = (bookingId) => async () => {
+  const handleEditStatus = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      const confirmDelete = await Swal.fire({
-        title: "คุณต้องการลบการจองนี้ใช่หรือไม่?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "ใช่, ลบเลย!",
-        cancelButtonText: "ยกเลิก",
-      });
-
-      if (!confirmDelete.isConfirmed) {
-        return;
-      }
-
-      await axios.delete(`http://localhost:8889/booking/delete/${bookingId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setBooking((prevBooking) =>
-        prevBooking.filter((item) => item.id !== bookingId)
+      const response = await axios.patch(
+        `http://localhost:8889/booking/updatebooking/${id}`,
+        { status: "Cancel" }, // Set the status here as required
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
-      Swal.fire({
-        icon: "success",
-        title: "ลบการจองเรียบร้อยแล้ว",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      alert("Status changed");
+      // setBooking((prevBookings) =>
+      //   prevBookings.map((booking) =>
+      //     booking.id === id
+      //       ? { ...booking, status: response.data.result.status }
+      //       : booking
+      //   ).filter((booking) => booking.status !== "Cancel" && booking.status !== "FullyBooked")
+      // );
     } catch (error) {
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด",
-        text: "ไม่สามารถลบการจองได้ กรุณาลองใหม่ภายหลัง",
-      });
     }
   };
 
@@ -140,14 +122,12 @@ export default function Book() {
               </td>
               <td className="px-6 py-4 whitespace-nowrap">{item.status}</td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {item.status === "Pending" && (
-                  <button
-                    className="text-red-600 hover:hover:text-red-600"
-                    onClick={hdlDeleteBooking(item.id)}
-                  >
-                    Cancel
-                  </button>
-                )}
+                <button
+                  className="text-indigo-600 hover:text-indigo-900"
+                  onClick={() => handleEditStatus(item.id)}
+                >
+                  {item.status === "Pending" ? "Cancel" : "Cancel"}
+                </button>
               </td>
             </tr>
           ))}

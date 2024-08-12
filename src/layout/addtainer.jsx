@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import Img from "../assets/img/Fitness Logo -  PosterMyWall.png"
 
-export default function RegisterForm() {
+export default function AddTrainer() {
   const [input, setInput] = useState({
     name: "",
     username: "",
@@ -83,7 +84,7 @@ export default function RegisterForm() {
     >
       <div className="text-center mb-16">
         <a href="javascript:void(0)">
-          <img src="" alt="logo!!" className="w-52 inline-block" />
+          <img src={Img} alt="logo!!" className="w-52 inline-block" />
         </a>
         <h4 className="text-base font-semibold mt-3">
           Sign up into your account

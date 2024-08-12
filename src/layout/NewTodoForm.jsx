@@ -59,7 +59,6 @@ function Trainer({ trainer }) {
         return;
       }
 
-      // Create a JavaScript Date object from input.bookingDateTime
       const bookingDateTime = new Date(input.bookingDateTime);
 
       // Check if bookingDateTime is a valid date
@@ -76,8 +75,7 @@ function Trainer({ trainer }) {
         `http://localhost:8889/booking/createbooking/`,
         { ...input, bookingDateTime, bookingDate, expiryDate },
         { headers: { Authorization: `Bearer ${token}` } }
-      );
-      console.log(response);
+      )
       alert("Successfully created");
       setIsBookingAllowed(false); 
     } catch (error) {

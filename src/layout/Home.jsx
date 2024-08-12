@@ -1,17 +1,17 @@
 import React from "react";
-import Img from "../assets/img/Black Yellow Modern Fitness Gym Instagram Post.png";
+import Img from "../assets/img/black and white gym logo -  PosterMyWall.png";
 import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-
     <div className="p-4 sm:p-9 grid grid-cols-1 sm:grid-cols-2 gap-5 place-items-center min-h-[600px]">
       <div className="">
         <div className="space-y-7 text-black order-2 sm:order-1">
-          <h1 className="text-6xl">Fresh & Healthy Meal Plan Delivery</h1>
+          <h1 className="text-6xl">Spartan Fitness</h1>
           <p className="lg:pr-64">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore
-            iure nemo, natus quasi nobis alias laudantium eos illo atque facere.
+            At the core of Spartan Fitness lies a philosophy inspired by the
+            ancient Spartans, known for their unmatched discipline, strength,
+            and resilience
           </p>
           <div>
             <Link to="/login">
@@ -28,9 +28,8 @@ export default function Home() {
         </div>
       </div>
       <div className="">
-        <img src={Img} alt="Healthy Meal"/>
+        <img src={Img} alt="Healthy Meal" />
       </div>
     </div>
-    
   );
 }

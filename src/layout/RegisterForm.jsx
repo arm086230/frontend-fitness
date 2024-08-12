@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import Img from "../assets/img/Fitness Logo -  PosterMyWall.png";
 
 export default function RegisterForm() {
   const [input, setInput] = useState({
@@ -13,14 +14,17 @@ export default function RegisterForm() {
     phone: "",
     age: "",
     sex: "",
-    role: "",
+    role: "USER",
   });
 
-  const fileInput = useRef(null);
+  const [submittedRole, setSubmittedRole] = useState('USER')
+
+  const fileInputImage = useRef(null);
+  const fileInputResume = useRef(null);
   const navigate = useNavigate();
 
   const hdlChange = (e) => {
-    setInput((prv) => ({ ...prv, [e.target.name]: e.target.value }));
+    setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const isValidPhoneNumber = (phone) => {
@@ -56,14 +60,20 @@ export default function RegisterForm() {
         });
       } else {
         // Prepare form data for registration
-        const file = fileInput.current?.files[0];
         const formData = new FormData();
         Object.entries(input).forEach(([key, value]) => {
           formData.append(key, value);
         });
 
-        if (file) {
-          formData.append("image", file);
+        const imageFile = fileInputImage.current?.files[0];
+        const resumeFile = fileInputResume.current?.files[0];
+
+        if (imageFile) {
+          formData.append("image", imageFile);
+        }
+
+        if (resumeFile) {
+          formData.append("resumefile", resumeFile);
         }
 
         // Send registration request
@@ -78,7 +88,7 @@ export default function RegisterForm() {
             title: "Register Successful",
             text: "You can now login with your credentials.",
           }).then(() => {
-            navigate("/login"); // Redirect to login page after successful registration
+            navigate("/login");
           });
         } else {
           Swal.fire({
@@ -90,6 +100,11 @@ export default function RegisterForm() {
       }
     } catch (err) {
       console.log(err.message);
+      Swal.fire({
+        icon: "error",
+        title: "Registration Error",
+        text: "An error occurred during registration. Please try again later.",
+      });
     }
   };
 
@@ -100,7 +115,7 @@ export default function RegisterForm() {
     >
       <div className="text-center mb-16">
         <a href="javascript:void(0)">
-          <img src="" alt="logo!!" className="w-52 inline-block" />
+          <img src={Img} alt="logo!!" className="w-52 inline-block" />
         </a>
         <h4 className="text-base font-semibold mt-3">
           Sign up into your account
@@ -207,11 +222,51 @@ export default function RegisterForm() {
           </div>
 
           <div>
+            <label className="text-sm mb-2 block">Role</label>
+            <div>
+              <label className="mr-4">
+                <input
+                  type="radio"
+                  name="role"
+                  value="USER"
+                  checked={input.role === "USER"}
+                  onChange={hdlChange}
+                />
+                User
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="TRAINER"
+                  checked={input.role === "TRAINER"}
+                  onChange={hdlChange}
+                />
+                Trainer
+              </label>
+            </div>
+          </div>
+
+          {input.role === "TRAINER" && (
+            <div>
+              <label className="text-sm mb-2 block">Attach Resume</label>
+              <input
+                type="file"
+                className="w-full"
+                name="resumefile"
+                ref={fileInputResume}
+                accept="image/*"
+              />
+            </div>
+          )}
+
+          <div className="">
+            <label className="text-sm block">Image</label>
             <input
               type="file"
-              className="w-full"
+              className="w-full mt-10"
               name="image"
-              ref={fileInput}
+              ref={fileInputImage}
               accept="image/*"
             />
           </div>
@@ -228,3 +283,27 @@ export default function RegisterForm() {
     </div>
   );
 }
+
+// const Register = () => {
+//   const [role, setRole] = useState('user');
+//   const [isApproved, setIsApproved] = useState(false);
+//   const [submittedRole, setSubmittedRole] = useState('user')
+
+//   const handleRoleChange = (event) => {
+//     setRole(event.target.value);
+//   };
+
+//   const handleSubmit = (event) => {
+//     event.preventDefault();
+//     if (role === 'trainer') {
+      
+//       console.log("Trainer application submitted, waiting for approval.");
+//       setSubmittedRole('trainer'); 
+//       setIsApproved(false); 
+//     } else {
+   
+//       console.log("User registered successfully.");
+//       setSubmittedRole('user');
+//       setIsApproved(true);
+//     }
+//   }

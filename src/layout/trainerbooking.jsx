@@ -1,16 +1,21 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
+/* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
 
-export default function Admin() {
+export default function trainerbooking() {
   const [data, setData] = useState([]);
-
+  const { user } = useAuth();
+  console.log(user?.id);
   useEffect(() => {
     const getData = async () => {
       try {
+        const id = user?.id;
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:8889/booking/admin",
+          `http://localhost:8889/workout/getbyusers/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -106,33 +111,17 @@ export default function Admin() {
 }
 
 function AdminShowBooking({ booking }) {
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [editBooking, setEditBooking] = useState({ status: "Confirmed" });
-
-  const handleDeleteBooking = async (e) => {
+  // const [isDeleted, setIsDeleted] = useState(false);
+  const [editBooking, setEditBooking] = useState("");
+  const handleEditStatus = async (e, status) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      const delebooks = booking.id;
-      await axios.delete(`http://localhost:8889/booking/delete/${delebooks}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      alert("Deleted");
-      setIsDeleted(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleEditStatus = async (e) => {
-    e.preventDefault();
-    try {
+      setEditBooking(status);
+      console.log(status);
       const id = booking.id;
       const response = await axios.patch(
         `http://localhost:8889/booking/updatebooking/${id}`,
-        editBooking,
+        {status},
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -145,8 +134,7 @@ function AdminShowBooking({ booking }) {
       console.log(error);
     }
   };
-
-  if (isDeleted) return null;
+  console.log(booking.id);
 
   return (
     <tr className="hover:bg-gray-100">
@@ -170,18 +158,18 @@ function AdminShowBooking({ booking }) {
       <td className="px-6 py-4 whitespace-nowrap">
         <button
           className="text-indigo-600 hover:text-indigo-900"
-          onClick={handleEditStatus}
+          onClick={(e) => handleEditStatus(e, "Confirmed")}
         >
-          {booking.status === "Confirmed" ? "Unconfirm" : "Confirm"}
+          {"Confirmed"}
         </button>
       </td>
 
       <td className="px-6 py-4 whitespace-nowrap">
         <button
-          className="text-red-500 hover:text-indigo-900"
-          onClick={handleDeleteBooking}
+          className="text-indigo-600 hover:text-indigo-900"
+          onClick={(e) => handleEditStatus(e, "FullyBooked")}
         >
-          Delete
+          {"FullyBooked"}
         </button>
       </td>
     </tr>

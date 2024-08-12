@@ -18,6 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <div className="flex justify-center">
           <a className="mr-6 text-neutral-600 dark:text-neutral-200">
             <svg
+            
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
               fill="currentColor"
@@ -104,42 +105,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
             </p>
           </div>
-          {/* <!-- Products section --> */}
-          <div className="">
-            <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
-              Products
-            </h6>
-            <p className="mb-4">
-              <a className="text-neutral-600 dark:text-neutral-200">Angular</a>
-            </p>
-            <p className="mb-4">
-              <a className="text-neutral-600 dark:text-neutral-200">React</a>
-            </p>
-            <p className="mb-4">
-              <a className="text-neutral-600 dark:text-neutral-200">Vue</a>
-            </p>
-            <p>
-              <a className="text-neutral-600 dark:text-neutral-200">Laravel</a>
-            </p>
-          </div>
-          {/* <!-- Useful links section --> */}
-          <div className="">
-            <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
-              Useful links
-            </h6>
-            <p className="mb-4">
-              <a className="text-neutral-600 dark:text-neutral-200">Pricing</a>
-            </p>
-            <p className="mb-4">
-              <a className="text-neutral-600 dark:text-neutral-200">Settings</a>
-            </p>
-            <p className="mb-4">
-              <a className="text-neutral-600 dark:text-neutral-200">Orders</a>
-            </p>
-            <p>
-              <a className="text-neutral-600 dark:text-neutral-200">Help</a>
-            </p>
-          </div>
+
           {/* <!-- Contact section --> */}
           <div>
             <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
@@ -204,15 +170,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </div>
 
       {/* <!--Copyright section--> */}
-      <div className="bg-neutral-200 p-6 text-center dark:bg-neutral-700">
-        <span>© 2023 Copyright:</span>
-        <a
-          className="font-semibold text-neutral-600 dark:text-neutral-400"
-          href="https://tw-elements.com/"
-        >
-          TW Elements
-        </a>
-      </div>
+
     </footer>
   </React.StrictMode>
 );

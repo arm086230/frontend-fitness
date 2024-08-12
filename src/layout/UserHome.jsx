@@ -37,7 +37,7 @@ export default function UserHome() {
 
 function WorkOut({ workout }) {
   return (
-    <div className="bg-white rounded w-[340px] sm:w-[400px] md:w-[450px] lg:w-[340px] xl:w-[400px] overflow-hidden shadow-lg my-4 mx-3 flex-shrink">
+    <div className="bg-white rounded w-[340px] sm:w-[400px] md:w-[450px] lg:w-[340px] xl:w-[400px] overflow-hidden shadow-lg my-4 mx-3 flex-shrink flex ">
       <div className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
         <img className="w-full h-auto" src={workout.img} alt="Workout" />
         <div className="px-6 py-4">
